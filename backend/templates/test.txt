@@ -1,0 +1,183 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ profile.name}} — Backend Developer</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="templates/style.css"></head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    
+    <a href="/">{{ profile.name }}</a>
+</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
+    <li><a href="#experience" onclick="closeMenu()">Experience</a></li>
+    <li><a href="#connect" onclick="closeMenu()">Connect</a></li>
+  </ul>
+  <button class="nav-menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="Menu">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="avatar-wrap">
+      <div class="avatar">
+        {% if profile.avatar %}
+          <img src="{{ profile.avatar.url }}" alt="{{ profile.name }}"/>
+        {% else %}KJ{% endif %}
+      </div>
+      <div class="status-dot">available</div>
+    </div>
+
+    <div class="hero-text">
+      <div class="hero-eyebrow">// {{ profile.title }}</div>
+      <h1 class="hero-name">{{ profile.name }}<span class="dot">.</span></h1>
+      <p class="hero-role">{{ profile.role }}</p>
+      <p class="hero-bio">{{ profile.bio }}</p>
+      <div class="skill-chips">
+        {% for skill in skills %}
+          <span class="chip {% if skill.highlight %}hot{% endif %}">{{ skill.name }}</span>
+          <span class="chip {% if skill.highlight %}hot{% endif %}">{{ skill.rating }}</span>
+          <br>
+          
+        {% endfor %}
+
+      </div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="{{ profile.github }}" target="_blank" class="btn btn-glass">GitHub ↗</a>
+        <a href="#connect" class="btn btn-glass">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section-divider"></div>
+<section class="section fade" id="about">
+  <div class="section-head">
+    <span class="section-label">About</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>{{ profile.about }}</p>
+      <p>{{ profile.about_extra}}</p>
+    </div>
+    <div class="stats-grid">
+      {% for key, value in overview.items %}
+        <div class="stat">
+          <div class="stat-val">{{ key }}</div>
+          <div class="stat-lbl">{{ value }}</div>
+        </div>  
+      {% endfor %}
+
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<div class="section-divider"></div>
+<section class="section fade" id="projects">
+  <div class="section-head">
+    <span class="section-label">Projects</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+    {% for project in projects %}
+    <a class="project-card" href="{{ project.github_url }}" target="_blank">
+      <div class="project-head">
+        <div class="project-name">{{ project.name }}</div>
+        <div class="project-arrow">↗</div>
+      </div>
+      <p class="project-desc">{{ project.description }}</p>
+      <div class="tech-chips">
+        {% for tech in project.tech_list %}<span class="tech-chip">{{ tech }}</span>{% endfor %}
+      </div>
+    </a>
+    
+    {% endfor %}
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<div class="section-divider"></div>
+<section class="section fade" id="experience">
+  <div class="section-head">
+    <span class="section-label">Experience</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="exp-list">
+    {% for exp in experiences %}
+    <div class="exp-item">
+      <div class="exp-date">{{ exp.date_range }}</div>
+      <div>
+        <div class="exp-role">{{ exp.title }}</div>
+        <div class="exp-company">{{ exp.company }}</div>
+        <div class="exp-desc">{{ exp.description }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- CONNECT -->
+<div class="section-divider"></div>
+<section class="section fade" id="connect">
+  <div class="section-head">
+    <span class="section-label">Connect</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="connect-box">
+    <h2 class="connect-heading">{{ profile.connect_heading }}</h2>
+    <p class="connect-sub">{{ profile.connect_text }}</p>
+    <div class="connect-btns">
+      <a href="mailto:{{ profile.email|default:'kinshukjangra869@gmail.com' }}" class="btn btn-primary">Send Email</a>
+      <a href="{{ profile.github|default:'https://github.com/E-cyborg' }}" target="_blank" class="btn btn-glass">GitHub ↗</a>
+      <a href="{{ profile.linkedin|default:'#' }}" target="_blank" class="btn btn-glass">LinkedIn ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>{{ profile.name}} · {{ profile.email }} · Built with Django</span>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('navLinks').classList.remove('open');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+  document.addEventListener('click', (e) => {
+    const nav = document.getElementById('navLinks');
+    const btn = document.getElementById('menuBtn');
+    if (!nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>

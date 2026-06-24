@@ -1,0 +1,53 @@
+{% extends "root.html" %}
+
+{% block content %}
+    <div class="section-head">
+        <span class="section-label">Database // Active Profiles</span>
+        <div class="section-line"></div>
+    </div>
+    
+    <div class="projects-grid" style="margin-top: 60px; margin-bottom: 40px;">
+        {% for profile in page_obj %}
+            <a href="/{{ profile.id }}/" class="project-card" target="_blank" rel="noopener noreferrer">
+                <div class="project-head">
+                    <h3 class="project-name">{{ profile.name }}</h3>
+                    <span class="project-arrow">↗</span>
+                </div>
+                <span style="font-family: var(--mono); font-size: 0.72rem; color: var(--accent); display: block; margin-top: -6px; margin-bottom: 8px;">
+                    Node #{{ profile.id }}
+                </span>
+                <p class="project-desc">{{ profile.role }}</p>
+                <div class="tech-chips">
+                    <span class="tech-chip">User Node</span>
+                    <span class="tech-chip">ID: {{ profile.id }}</span>
+                </div>
+            </a>
+        {% empty %}
+            <div class="connect-box" style="grid-column: 1 / -1; padding: 40px; border-style: dashed;">
+                <h3 class="project-name" style="font-size: 1.2rem; color: var(--muted2); margin-bottom: 8px;">No Profiles Found</h3>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 60px; font-family: var(--mono); font-size: 0.85rem;">
+        
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-glass" style="padding: 6px 14px;">&larr; Prev</a>
+        {% else %}
+            <span class="btn btn-glass" style="padding: 6px 14px; opacity: 0.4; cursor: not-allowed;">&larr; Prev</span>
+        {% endif %}
+
+        <span style="color: var(--muted2);">
+            Page <span style="color: var(--accent);">{{ page_obj.number }}</span> of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-glass" style="padding: 6px 14px;">Next &rarr;</a>
+        {% else %}
+            <span class="btn btn-glass" style="padding: 6px 14px; opacity: 0.4; cursor: not-allowed;">Next &rarr;</span>
+        {% endif %}
+        
+    </div>
+    {% endif %}
+{% endblock %}

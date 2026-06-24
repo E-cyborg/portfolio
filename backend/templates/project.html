@@ -1,0 +1,50 @@
+{% extends "root.html" %}
+
+{% block content %}
+<!-- PROJECTS -->
+<div class="section-divider"></div>
+<section class="section fade" id="projects">
+  <div class="section-head">
+    <span class="section-label">Projects</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="projects-grid">
+    {% for project in projects %}
+    <a class="project-card" href="{{ project.github_url }}" target="_blank">
+      <div class="project-head">
+        <div class="project-name">{{ project.name }}</div>
+        <div class="project-arrow">↗</div>
+      </div>
+      <p class="project-desc">{{ project.description }}</p>
+      <div class="tech-chips">
+        {% for tech in project.tech_list %}<span class="tech-chip">{{ tech }}</span>{% endfor %}
+      </div>
+    </a>
+    
+    {% endfor %}
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<div class="section-divider"></div>
+<section class="section fade" id="experience">
+  <div class="section-head">
+    <span class="section-label">Experience</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="exp-list">
+    {% for exp in experiences %}
+    <div class="exp-item">
+      <div class="exp-date">{{ exp.date_range }}</div>
+      <div>
+        <div class="exp-role">{{ exp.title }}</div>
+        <div class="exp-company">{{ exp.company }}</div>
+        <div class="exp-desc">{{ exp.description }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+{% endblock %}

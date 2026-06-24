@@ -1,0 +1,64 @@
+{% extends "root.html" %}
+
+{% block content %}
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="avatar-wrap">
+      <div class="avatar">
+        {% if profile.avatar %}
+          <img src="{{ profile.avatar.url }}" alt="{{ profile.name }}"/>
+        {% else %}KJ{% endif %}
+      </div>
+      <div class="status-dot">available</div>
+    </div>
+
+    <div class="hero-text">
+      <div class="hero-eyebrow">{{ profile.title }}</div>
+      <h1 class="hero-name">{{ profile.name }}<span class="dot">.</span></h1>
+      <p class="hero-role">{{ profile.role }}</p>
+      <p class="hero-bio">{{ profile.bio }}</p>
+      <div class="skill-chips">
+        {% for skill in skills %}
+          <span class="chip {% if skill.highlight %}hot{% endif %}">{{ skill.name }}</span>
+          <span class="chip {% if skill.highlight %}hot{% endif %}">{{ skill.rating }}</span>
+          <br>
+          
+        {% endfor %}
+
+      </div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="{{ profile.github }}" target="_blank" class="btn btn-glass">GitHub ↗</a>
+        <a href="#connect" class="btn btn-glass">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section-divider"></div>
+<section class="section fade" id="about">
+  <div class="section-head">
+    <span class="section-label">About</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>{{ profile.about }}</p>
+      <p>{{ profile.about_extra}}</p>
+    </div>
+    <div class="stats-grid">
+      {% for key, value in overview.items %}
+        <div class="stat">
+          <div class="stat-val">{{ key }}</div>
+          <div class="stat-lbl">{{ value }}</div>
+        </div>  
+      {% endfor %}
+
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
